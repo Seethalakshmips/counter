@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Angular Automatic Counter</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+  <script>
+    var app = angular.module('autoCounterApp', []);
+
+    app.controller('AutoCounterController', function ($scope, $interval) {
+      $scope.count = 0;
+      var intervalPromise;
+
+      $scope.start = function () {
+        if (!intervalPromise) {
+          intervalPromise = $interval(function () {
+            $scope.count++;
+          }, 1000);
+        }
+      };
+
+      $scope.stop = function () {
+        if (intervalPromise) {
+          $interval.cancel(intervalPromise);
+          intervalPromise = undefined;
+        }
+      };
+
+      $scope.reset = function () {
+        $scope.stop();
+        $scope.count = 0;
+      };
+    });
+  </script>
+</head>
+<link rel="stylesheet" href="angular.css">
+<body ng-app="autoCounterApp">
+  <div ng-controller="AutoCounterController">
+    <h1 class="head">Counter: {{ count }}</h1>
+    <button class="btone" ng-click="start()">Start</button>
+    <button class="btonee" ng-click="stop()">Stop</button>
+    <button class="btoneee" ng-click="reset()">Reset</button>
+  </div>
+</body>
+</html>
